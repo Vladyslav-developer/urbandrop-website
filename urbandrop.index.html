@@ -1,0 +1,1980 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="URBAN DROP – premium streetwear: odzież męska, damska i akcesoria."
+    />
+    <title>URBAN DROP | Premium Streetwear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      /* =========================================================
+   URBAN DROP — mobile-first.
+   База: телефон от 320px, всё на 100% ширины в один столбец.
+   Дальше только min-width: 560 → 900 → 1100 → 1280.
+   ========================================================= */
+
+      /* ---------- Tokens ---------- */
+      :root {
+        --accent: #ff4757;
+        --dark: #121212;
+        --bg: #f1f2f6;
+        --muted: #888;
+        --radius: 8px;
+        --gutter: clamp(16px, 4vw, 48px);
+        --nav-h: 60px;
+        --nav-total: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+        --ease: all 0.3s ease-in-out;
+      }
+
+      /* ---------- Base ---------- */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        scroll-behavior: smooth;
+        scroll-padding-top: var(--nav-total);
+      }
+      body {
+        min-width: 320px;
+        font-family: "Montserrat", system-ui, sans-serif;
+        font-size: 1rem; /* 16px: iOS не зумит поля ввода */
+        line-height: 1.6;
+        color: var(--dark);
+        background: var(--bg);
+        overflow-x: clip;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+      button {
+        -webkit-tap-highlight-color: transparent;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      main {
+        min-height: 100svh;
+        padding-top: var(--nav-total);
+        outline: none;
+        animation: fade 0.4s ease;
+      }
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+
+      /* ---------- Nav (mobile: logo + иконки + бургер) ---------- */
+      .nav {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 1000;
+        height: var(--nav-total);
+        padding: env(safe-area-inset-top, 0px) clamp(10px, 3.5vw, var(--gutter))
+          0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      .logo {
+        flex-shrink: 0;
+      }
+      .logo img {
+        height: 36px;
+        width: auto;
+        max-width: min(24vw, 240px);
+        object-fit: contain;
+        object-position: left center;
+        transition: var(--ease);
+      }
+      .nav__icons {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        flex-shrink: 0;
+      }
+      .icon-btn {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        background: none;
+        border: 0;
+        color: inherit;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: var(--ease);
+      }
+      .badge {
+        position: absolute;
+        top: 4px;
+        right: 2px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        display: grid;
+        place-items: center;
+        border-radius: 9px;
+        background: var(--accent);
+        color: #fff;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      /* меню-выпадашка на мобильных и планшетах */
+      .nav__links {
+        position: fixed;
+        top: var(--nav-total);
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100dvh - var(--nav-total));
+        overflow-y: auto;
+        background: #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-8px);
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease,
+          visibility 0.25s;
+      }
+      .nav__links.is-open {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+      }
+      .nav__links a {
+        padding: 16px var(--gutter);
+        border-top: 1px solid #f0f0f0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: var(--ease);
+      }
+      .nav__links a[aria-current="page"] {
+        color: var(--accent);
+      }
+
+      /* ---------- Language switcher ---------- */
+      .lang {
+        display: flex;
+        gap: 2px;
+        padding: 3px;
+        background: var(--bg);
+        border-radius: 999px;
+      }
+      .lang button {
+        min-width: 28px;
+        min-height: 32px;
+        padding: 0 6px;
+        border: 0;
+        border-radius: 999px;
+        background: none;
+        color: #666;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: var(--ease);
+      }
+      .lang button[aria-pressed="true"] {
+        background: var(--dark);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+      /* язык всегда в верхней панели; копия в бургер-меню больше не нужна */
+      .lang--menu {
+        display: none;
+      }
+
+      /* ---------- Buttons ---------- */
+      .btn {
+        position: relative;
+        overflow: hidden;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        min-height: 48px;
+        padding: 14px 24px;
+        border: 0;
+        border-radius: 6px;
+        font-weight: 800;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: var(--ease);
+      }
+      .btn--dark {
+        width: 100%;
+        background: var(--dark);
+        color: #fff;
+      }
+      .btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 60%;
+        height: 100%;
+        transform: skewX(-20deg);
+        background: linear-gradient(
+          120deg,
+          transparent,
+          rgba(255, 255, 255, 0.35),
+          transparent
+        );
+        transition: left 0.6s ease;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+
+      /* ---------- Hero (мобильный: 3 панели друг под другом) ---------- */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        height: calc(100svh - var(--nav-total));
+        min-height: 420px;
+      }
+      .hero__panel {
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        min-height: 0;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        text-align: center;
+      }
+      .hero__panel img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.8s ease;
+      }
+      .hero__panel::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        transition: var(--ease);
+      }
+      .hero__text {
+        position: relative;
+        z-index: 1;
+        max-width: 100%;
+        padding: 0 var(--gutter);
+      }
+      .hero__text h1 {
+        margin-bottom: 8px;
+        font-size: clamp(1.5rem, 7vw, 4rem);
+        font-weight: 900;
+        line-height: 1.1;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        overflow-wrap: anywhere;
+      }
+      .hero__cta {
+        display: inline-block;
+        padding: 10px 24px;
+        border-radius: 999px;
+        background: #fff;
+        color: var(--dark);
+        font-size: 0.8rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        transition: var(--ease);
+      }
+      .hero__cta i {
+        margin-left: 8px;
+        transition: transform 0.3s ease;
+      }
+
+      /* ---------- Catalog (мобильный: 1 колонка) ---------- */
+      .container {
+        width: 100%;
+        max-width: 1300px;
+        margin: 0 auto;
+        padding: 24px var(--gutter) 40px;
+      }
+      .section-title {
+        margin-bottom: 24px;
+        text-align: center;
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        font-weight: 900;
+        line-height: 1.2;
+        text-transform: uppercase;
+        overflow-wrap: anywhere;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .card {
+        display: block;
+        min-width: 0;
+        overflow: hidden;
+        background: #fff;
+        border-radius: var(--radius);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: var(--ease);
+      }
+      .card__img {
+        aspect-ratio: 4 / 5;
+        background: #f8f8f8;
+      } /* фиксированные пропорции: ничего не «прыгает» */
+      .card__img img {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        object-fit: contain;
+        transition: var(--ease);
+      }
+      .card__info {
+        padding: 16px;
+        text-align: center;
+      }
+      .card__info h3 {
+        margin: 6px 0;
+        font-size: 1rem;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
+      .card__info strong {
+        font-size: 1.25rem;
+        font-weight: 900;
+      }
+      .brand {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* ---------- Product (мобильный: галерея сверху, инфо снизу) ---------- */
+      .back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 44px;
+        margin-bottom: 16px;
+        padding: 0 16px;
+        border-radius: 999px;
+        background: #fff;
+        color: #666;
+        font-weight: 600;
+        text-transform: uppercase;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+      .back i {
+        transition: transform 0.3s ease;
+      }
+      .detail {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 16px;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+      .detail__gallery,
+      .detail__info {
+        min-width: 0;
+      }
+      .detail__gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .detail__main {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 1 / 1;
+        max-height: 560px;
+        overflow: hidden;
+        border-radius: var(--radius);
+        background: #f8f8f8;
+      }
+      .detail__main img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+      .thumbs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      .thumb {
+        width: 64px;
+        height: 64px;
+        padding: 0;
+        overflow: hidden;
+        border: 2px solid transparent;
+        border-radius: 6px;
+        background: #f8f8f8;
+        opacity: 0.6;
+        cursor: pointer;
+        transition: var(--ease);
+      }
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .thumb.is-active {
+        opacity: 1;
+        border-color: var(--accent);
+      }
+      .detail__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .detail__info h1 {
+        margin: 8px 0 12px;
+        font-size: clamp(1.5rem, 6vw, 2.5rem);
+        font-weight: 900;
+        line-height: 1.2;
+        overflow-wrap: anywhere;
+      }
+      .price {
+        margin-bottom: 12px;
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        font-weight: 800;
+        color: var(--accent);
+      }
+      .detail__info p {
+        margin-bottom: 20px;
+        font-size: 1rem;
+        color: #555;
+      }
+      .selectors {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+      }
+      .field label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .field select {
+        width: 100%;
+        min-height: 48px;
+        padding: 0 14px;
+        border: 2px solid #eee;
+        border-radius: 6px;
+        background: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      /* ---------- Info pages ---------- */
+      .info-box {
+        padding: 32px 16px;
+        border-radius: 12px;
+        background: #fff;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 32px;
+      }
+      .stats h3 {
+        font-size: clamp(2.5rem, 9vw, 3.5rem);
+        font-weight: 900;
+        color: var(--accent);
+      }
+      .stats p {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+      }
+      .contact__mail {
+        display: block;
+        margin: 12px 0;
+        overflow-wrap: anywhere;
+        font-size: clamp(1.1rem, 5vw, 1.6rem);
+        font-weight: 900;
+        color: var(--accent);
+      }
+      .contact__phone {
+        font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+      }
+      .note {
+        margin-top: 24px;
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+      .footer {
+        padding: 40px var(--gutter)
+          calc(40px + env(safe-area-inset-bottom, 0px));
+        background: var(--dark);
+        color: #fff;
+        text-align: center;
+      }
+      .footer h2 {
+        font-weight: 900;
+        letter-spacing: 2px;
+      }
+      .footer p {
+        margin-top: 12px;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      /* ---------- Cart drawer ---------- */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1500;
+        background: rgba(0, 0, 0, 0.6);
+      }
+      .cart {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 1600;
+        width: min(420px, 100%);
+        height: 100%;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        background: #fff;
+        transform: translateX(100%);
+        visibility: hidden;
+        transition:
+          transform 0.3s ease,
+          visibility 0.3s;
+      }
+      .cart.is-open {
+        transform: none;
+        visibility: visible;
+      }
+      .cart__head,
+      .cart__foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+      }
+      .cart__head {
+        padding-top: calc(16px + env(safe-area-inset-top, 0px));
+        border-bottom: 1px solid #eee;
+      }
+      .cart__foot {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+        border-top: 1px solid #eee;
+      }
+      .cart__total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 1.2rem;
+      }
+      .cart__body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px 20px;
+        overscroll-behavior: contain;
+      }
+      .empty {
+        margin-top: 40px;
+        text-align: center;
+        color: var(--muted);
+      }
+      .line {
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .line img {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+        border-radius: 6px;
+        background: #f8f8f8;
+      }
+      .line small {
+        display: block;
+        color: var(--muted);
+      }
+      .qty {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+      .qty button {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      /* ---------- Auth dialog + toast ---------- */
+      .auth {
+        width: min(400px, calc(100vw - 32px));
+        max-height: calc(100dvh - 32px);
+        margin: auto;
+        padding: clamp(24px, 6vw, 50px);
+        overflow-y: auto;
+        border: 0;
+        border-radius: 12px;
+        text-align: center;
+      }
+      .auth::backdrop {
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(5px);
+      }
+      .auth h2 {
+        margin-bottom: 20px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+      .auth input {
+        width: 100%;
+        min-height: 48px;
+        margin-bottom: 12px;
+        padding: 0 14px;
+        border: 2px solid #eee;
+        border-radius: 6px;
+      }
+      .auth__close {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+      }
+      .error {
+        min-height: 1.4em;
+        margin-bottom: 10px;
+        font-size: 0.875rem;
+        color: var(--accent);
+      }
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+        z-index: 3000;
+        width: max-content;
+        max-width: calc(100% - 32px);
+        padding: 14px 24px;
+        border-radius: 6px;
+        background: var(--dark);
+        color: #fff;
+        font-weight: 600;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, 20px);
+        transition: var(--ease);
+      }
+      .toast.is-visible {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      /* ---------- Hover только там, где он есть (мышь), не на тач-экранах ---------- */
+      @media (hover: hover) and (pointer: fine) {
+        .logo:hover img {
+          transform: scale(1.1);
+        }
+        .icon-btn:hover,
+        .nav__links a:hover,
+        .lang button:hover,
+        .back:hover,
+        .qty button:hover {
+          color: var(--accent);
+        }
+        .qty button:hover {
+          border-color: var(--accent);
+        }
+        .btn--dark:hover {
+          background: var(--accent);
+          transform: translateY(-2px);
+        }
+        .btn:hover::after {
+          left: 140%;
+        }
+        .hero__panel:hover img {
+          transform: scale(1.05);
+        }
+        .hero__panel:hover::after {
+          background: rgba(0, 0, 0, 0.2);
+        }
+        .hero__panel:hover .hero__cta {
+          background: var(--accent);
+          color: #fff;
+        }
+        .hero__panel:hover .hero__cta i {
+          transform: translateX(6px);
+        }
+        .card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover .card__img img {
+          transform: scale(1.05);
+        }
+        .back:hover i {
+          transform: translateX(-3px);
+        }
+        .thumb:hover {
+          opacity: 1;
+          border-color: var(--accent);
+        }
+      }
+
+      /* ≥ 380px — обычные телефоны */
+      @media (min-width: 380px) {
+        .icon-btn {
+          width: 40px;
+          height: 40px;
+        }
+        .lang button {
+          min-width: 32px;
+        }
+      }
+
+      /* =========================================================
+   ≥ 560px — большой телефон / маленький планшет
+   ========================================================= */
+      @media (min-width: 560px) {
+        .nav {
+          padding-left: var(--gutter);
+          padding-right: var(--gutter);
+        }
+        .logo img {
+          max-width: min(46vw, 240px);
+        }
+        .nav__icons {
+          gap: 4px;
+        }
+        .icon-btn {
+          width: 44px;
+          height: 44px;
+          font-size: 1.25rem;
+        }
+        .lang button {
+          min-width: 40px;
+          min-height: 36px;
+          padding: 0 12px;
+          font-size: 0.75rem;
+        }
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 24px;
+        }
+        .selectors {
+          grid-template-columns: 1fr 1fr;
+        }
+        .stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .info-box {
+          padding: 48px 28px;
+        }
+        .thumb {
+          width: 70px;
+          height: 70px;
+        }
+      }
+
+      /* =========================================================
+   ≥ 900px — планшет в альбомной / маленький ноутбук
+   (меню остаётся в бургере — 6 пунктов + язык + иконки
+   ещё не помещаются в одну строку)
+   ========================================================= */
+      @media (min-width: 900px) {
+        :root {
+          --nav-h: 70px;
+        }
+        .logo img {
+          height: 50px;
+        }
+        .nav__icons {
+          gap: 8px;
+        }
+        .hero {
+          flex-direction: row;
+          min-height: 520px;
+        }
+        /* заголовок масштабируется от ширины панели (≈ 1/3 экрана), а не всего экрана */
+        .hero__text {
+          padding: 0 20px;
+        }
+        .hero__text h1 {
+          margin-bottom: 15px;
+          font-size: clamp(1.25rem, 2.8vw, 3.25rem);
+          letter-spacing: 1px;
+        }
+        .hero__cta {
+          padding: 14px 30px;
+          font-size: 0.875rem;
+        }
+        .container {
+          padding-top: 40px;
+          padding-bottom: 60px;
+        }
+        .section-title {
+          margin-bottom: 40px;
+        }
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 30px;
+        }
+        .detail {
+          flex-direction: row;
+          gap: clamp(32px, 4vw, 50px);
+          padding: clamp(24px, 3vw, 40px);
+        }
+        .detail__gallery,
+        .detail__info {
+          flex: 1;
+        }
+        .info-box {
+          padding: 60px 30px;
+        }
+      }
+
+      /* =========================================================
+   ≥ 1100px — меню в одну строку (бургер скрыт)
+   ========================================================= */
+      @media (min-width: 1100px) {
+        .burger {
+          display: none;
+        }
+        .nav__links {
+          position: static;
+          flex-direction: row;
+          gap: clamp(16px, 2.2vw, 30px);
+          max-height: none;
+          overflow: visible;
+          background: none;
+          box-shadow: none;
+          visibility: visible;
+          opacity: 1;
+          transform: none;
+        }
+        .nav__links a {
+          padding: 0;
+          border: 0;
+          white-space: nowrap;
+        }
+      }
+
+      /* ≥ 1280px — широкие экраны: контент не растягивается, центрируется (max-width: 1300px) */
+      @media (min-width: 1280px) {
+        .card__info {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <a
+        class="logo"
+        href="#/"
+        aria-label="URBAN DROP – start"
+        data-i18n-aria="logo.aria"
+        ><img src="logo.png" alt="URBAN DROP"
+      /></a>
+      <nav
+        id="menu"
+        class="nav__links"
+        aria-label="Główna nawigacja"
+        data-i18n-aria="nav.aria"
+      >
+        <a href="#/" data-route="home" data-i18n="nav.home">Start</a>
+        <a href="#/men" data-route="men" data-i18n="nav.men">Męskie</a>
+        <a href="#/women" data-route="women" data-i18n="nav.women">Damskie</a>
+        <a href="#/acc" data-route="acc" data-i18n="nav.acc">Akcesoria</a>
+        <a href="#/about" data-route="about" data-i18n="nav.about">O nas</a>
+        <a href="#/contact" data-route="contact" data-i18n="nav.contact"
+          >Kontakt</a
+        >
+        <div
+          class="lang lang--menu"
+          role="group"
+          aria-label="Język"
+          data-i18n-aria="nav.lang"
+        >
+          <button
+            type="button"
+            data-action="lang"
+            data-lang="pl"
+            aria-pressed="true"
+          >
+            PL
+          </button>
+          <button
+            type="button"
+            data-action="lang"
+            data-lang="en"
+            aria-pressed="false"
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            data-action="lang"
+            data-lang="ru"
+            aria-pressed="false"
+          >
+            RU
+          </button>
+        </div>
+      </nav>
+      <div class="nav__icons">
+        <div
+          class="lang lang--bar"
+          role="group"
+          aria-label="Język"
+          data-i18n-aria="nav.lang"
+        >
+          <button
+            type="button"
+            data-action="lang"
+            data-lang="pl"
+            aria-pressed="true"
+          >
+            PL
+          </button>
+          <button
+            type="button"
+            data-action="lang"
+            data-lang="en"
+            aria-pressed="false"
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            data-action="lang"
+            data-lang="ru"
+            aria-pressed="false"
+          >
+            RU
+          </button>
+        </div>
+        <button
+          class="icon-btn"
+          data-action="auth-open"
+          aria-label="Zaloguj się"
+          data-i18n-aria="nav.login"
+        >
+          <i class="fa-solid fa-user"></i>
+        </button>
+        <button
+          class="icon-btn"
+          data-action="cart-open"
+          aria-label="Koszyk"
+          data-i18n-aria="nav.cart"
+        >
+          <i class="fa-solid fa-bag-shopping"></i
+          ><span id="cart-badge" class="badge" hidden>0</span>
+        </button>
+        <button
+          class="icon-btn burger"
+          data-action="menu"
+          aria-label="Menu"
+          data-i18n-aria="nav.menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <main id="app" tabindex="-1"></main>
+
+    <footer class="footer">
+      <h2>URBAN DROP</h2>
+      <p>
+        &copy; <span id="year"></span>
+        <span data-i18n="footer.rights">Wszelkie prawa zastrzeżone.</span>
+      </p>
+    </footer>
+
+    <div id="overlay" class="overlay" data-action="cart-close" hidden></div>
+    <aside
+      id="cart"
+      class="cart"
+      aria-label="Koszyk"
+      data-i18n-aria="nav.cart"
+      aria-hidden="true"
+    >
+      <div class="cart__head">
+        <h2 data-i18n="cart.title">Koszyk</h2>
+        <button
+          class="icon-btn"
+          data-action="cart-close"
+          aria-label="Zamknij koszyk"
+          data-i18n-aria="cart.close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div id="cart-body" class="cart__body"></div>
+      <div class="cart__foot">
+        <div class="cart__total">
+          <span data-i18n="cart.total">Razem</span
+          ><strong id="cart-total"></strong>
+        </div>
+        <button
+          class="btn btn--dark"
+          data-action="checkout"
+          data-i18n="cart.checkout"
+        >
+          Zamów
+        </button>
+      </div>
+    </aside>
+
+    <dialog id="auth" class="auth">
+      <form id="auth-form" novalidate>
+        <button
+          type="button"
+          class="icon-btn auth__close"
+          data-action="auth-close"
+          aria-label="Zamknij"
+          data-i18n-aria="auth.close"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <h2 data-i18n="auth.title">Zaloguj się</h2>
+        <input
+          name="name"
+          type="text"
+          placeholder="Imię i nazwisko"
+          data-i18n-ph="auth.name"
+          autocomplete="name"
+          required
+        />
+        <input
+          name="email"
+          type="email"
+          placeholder="Adres e-mail"
+          data-i18n-ph="auth.email"
+          autocomplete="email"
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Hasło (min. 8 znaków)"
+          data-i18n-ph="auth.password"
+          autocomplete="new-password"
+          minlength="8"
+          required
+        />
+        <p id="auth-error" class="error" role="alert"></p>
+        <button class="btn btn--dark" type="submit" data-i18n="auth.submit">
+          Utwórz konto
+        </button>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      "use strict";
+      /* Słownik: klucz -> [pl, en, ru]. Dodając język, dopisz kolejny element do każdej tablicy. */
+      window.I18N = {
+        LANGS: ["pl", "en", "ru"],
+        LOCALES: { pl: "pl-PL", en: "en-GB", ru: "ru-RU" },
+        DICT: {
+          "nav.home": ["Start", "Home", "Главная"],
+          "nav.men": ["Męskie", "Men", "Мужское"],
+          "nav.women": ["Damskie", "Women", "Женское"],
+          "nav.acc": ["Akcesoria", "Accessories", "Аксессуары"],
+          "nav.about": ["O nas", "About us", "О нас"],
+          "nav.contact": ["Kontakt", "Contact", "Контакты"],
+          "nav.aria": ["Główna nawigacja", "Main navigation", "Главное меню"],
+          "nav.login": ["Zaloguj się", "Log in", "Войти"],
+          "nav.cart": ["Koszyk", "Cart", "Корзина"],
+          "nav.menu": ["Menu", "Menu", "Меню"],
+          "nav.lang": ["Język", "Language", "Язык"],
+          "logo.aria": [
+            "URBAN DROP – strona główna",
+            "URBAN DROP – home",
+            "URBAN DROP – главная",
+          ],
+          "cat.men.title": [
+            "Kolekcja Męska",
+            "Men's Collection",
+            "Мужская коллекция",
+          ],
+          "cat.men.hero": ["Męskie", "Men", "Мужское"],
+          "cat.men.cta": ["Kolekcja", "Collection", "Коллекция"],
+          "cat.women.title": [
+            "Kolekcja Damska",
+            "Women's Collection",
+            "Женская коллекция",
+          ],
+          "cat.women.hero": ["Damskie", "Women", "Женское"],
+          "cat.women.cta": ["Kup teraz", "Shop now", "Купить"],
+          "cat.acc.title": ["Akcesoria", "Accessories", "Аксессуары"],
+          "cat.acc.hero": ["Akcesoria", "Accessories", "Аксессуары"],
+          "cat.acc.cta": ["Zobacz", "View", "Смотреть"],
+          "product.back": [
+            "Wróć do katalogu",
+            "Back to catalogue",
+            "Назад в каталог",
+          ],
+          "product.color": [
+            "Kolor / wariant",
+            "Colour / variant",
+            "Цвет / вариант",
+          ],
+          "product.size": ["Rozmiar", "Size", "Размер"],
+          "product.add": ["Dodaj do koszyka", "Add to cart", "В корзину"],
+          "product.photo": ["Zdjęcie", "Photo", "Фото"],
+          "size.one": ["Uniwersalny", "One size", "Универсальный"],
+          "color.black": ["Czarny", "Black", "Чёрный"],
+          "color.olive": ["Oliwkowy", "Olive", "Оливковый"],
+          "color.white": ["Biały", "White", "Белый"],
+          "color.melange": ["Szary melanż", "Heather grey", "Серый меланж"],
+          "color.burgundy": ["Bordowy", "Burgundy", "Бордовый"],
+          "color.lightblue": ["Jasnoniebieski", "Light blue", "Голубой"],
+          "color.brown": ["Brązowy", "Brown", "Коричневый"],
+          "color.cream": ["Kremowy", "Cream", "Кремовый"],
+          "color.grey": ["Szary", "Grey", "Серый"],
+          "color.blackwhite": [
+            "Czarno-biały",
+            "Black and white",
+            "Чёрно-белый",
+          ],
+          "color.yellow": ["Żółty", "Yellow", "Жёлтый"],
+          "color.blueblack": [
+            "Niebiesko-czarny",
+            "Blue and black",
+            "Сине-чёрный",
+          ],
+          "color.greyyellow": ["Szaro-żółty", "Grey and yellow", "Серо-жёлтый"],
+          "color.green": ["Zielonkawy", "Greenish", "Зеленоватый"],
+          "color.blue": ["Niebieski", "Blue", "Синий"],
+          "about.text": [
+            "URBAN DROP to Twój zaufany dostawca odzieży z półki premium.",
+            "URBAN DROP is your trusted supplier of premium clothing.",
+            "URBAN DROP — ваш надёжный поставщик премиальной одежды.",
+          ],
+          "about.years": [
+            "Lat na rynku",
+            "Years on the market",
+            "Лет на рынке",
+          ],
+          "about.orders": [
+            "Zrealizowanych zamówień",
+            "Orders fulfilled",
+            "Выполненных заказов",
+          ],
+          "about.original": [
+            "Oryginalne produkty",
+            "Original products",
+            "Оригинальные товары",
+          ],
+          "contact.owner": ["Właściciel", "Owner", "Владелец"],
+          "contact.note": [
+            "Polska | Skontaktuj się z nami w razie pytań o rozmiary.",
+            "Poland | Contact us if you have any questions about sizing.",
+            "Польша | Свяжитесь с нами, если есть вопросы по размерам.",
+          ],
+          "footer.rights": [
+            "Wszelkie prawa zastrzeżone.",
+            "All rights reserved.",
+            "Все права защищены.",
+          ],
+          "cart.title": ["Koszyk", "Cart", "Корзина"],
+          "cart.close": ["Zamknij koszyk", "Close cart", "Закрыть корзину"],
+          "cart.total": ["Razem", "Total", "Итого"],
+          "cart.checkout": ["Zamów", "Place order", "Оформить заказ"],
+          "cart.empty": [
+            "Twój koszyk jest pusty.",
+            "Your cart is empty.",
+            "Ваша корзина пуста.",
+          ],
+          "cart.less": ["Mniej", "Less", "Меньше"],
+          "cart.more": ["Więcej", "More", "Больше"],
+          "auth.title": ["Zaloguj się", "Log in", "Вход"],
+          "auth.name": ["Imię i nazwisko", "Full name", "Имя и фамилия"],
+          "auth.email": ["Adres e-mail", "Email address", "Адрес эл. почты"],
+          "auth.password": [
+            "Hasło (min. 8 znaków)",
+            "Password (min. 8 characters)",
+            "Пароль (мин. 8 символов)",
+          ],
+          "auth.submit": ["Utwórz konto", "Create account", "Создать аккаунт"],
+          "auth.close": ["Zamknij", "Close", "Закрыть"],
+          "err.name": [
+            "Podaj imię i nazwisko.",
+            "Enter your full name.",
+            "Введите имя и фамилию.",
+          ],
+          "err.email": [
+            "Podaj poprawny adres e-mail.",
+            "Enter a valid email address.",
+            "Введите корректный адрес эл. почты.",
+          ],
+          "err.pass": [
+            "Hasło musi mieć min. 8 znaków.",
+            "Password must be at least 8 characters.",
+            "Пароль должен содержать минимум 8 символов.",
+          ],
+          "toast.added": [
+            "Dodano do koszyka!",
+            "Added to cart!",
+            "Добавлено в корзину!",
+          ],
+          "toast.empty": [
+            "Koszyk jest pusty",
+            "Your cart is empty",
+            "Корзина пуста",
+          ],
+          "toast.thanks": [
+            "Dziękujemy za zamówienie!",
+            "Thank you for your order!",
+            "Спасибо за заказ!",
+          ],
+          "toast.registered": [
+            "Rejestracja zakończona!",
+            "Registration complete!",
+            "Регистрация завершена!",
+          ],
+          "title.home": [
+            "Premium Streetwear",
+            "Premium Streetwear",
+            "Премиальный стритвир",
+          ],
+          "title.notfound": ["Nie znaleziono", "Not found", "Не найдено"],
+          "notfound.back": ["Wróć na start", "Back to home", "На главную"],
+          "img.missing": ["brak zdjęcia", "no image", "нет фото"],
+          "meta.desc": [
+            "URBAN DROP – premium streetwear: odzież męska, damska i akcesoria.",
+            "URBAN DROP – premium streetwear: men's and women's clothing and accessories.",
+            "URBAN DROP — премиальный стритвир: мужская и женская одежда и аксессуары.",
+          ],
+          "p.m1.name": [
+            "Bluza Crewneck",
+            "Crewneck Sweatshirt",
+            "Свитшот Crewneck",
+          ],
+          "p.m1.desc": [
+            "Klasyczna bluza ze 100% bawełny premium.",
+            "Classic sweatshirt made of 100% premium cotton.",
+            "Классический свитшот из 100% премиального хлопка.",
+          ],
+          "p.m2.name": [
+            "Bluza Tech Fleece na zamek",
+            "Tech Fleece Full-Zip",
+            "Толстовка Tech Fleece на молнии",
+          ],
+          "p.m2.desc": [
+            "Lekka, ciepła bluza sportowa z kapturem.",
+            "Lightweight, warm hooded sports jacket.",
+            "Лёгкая тёплая спортивная толстовка с капюшоном.",
+          ],
+          "p.m3.name": ["Air Max Dn", "Air Max Dn", "Air Max Dn"],
+          "p.m3.desc": [
+            "Nowa generacja Air Max.",
+            "The new generation of Air Max.",
+            "Новое поколение Air Max.",
+          ],
+          "p.w1.name": [
+            "Bluza Phoenix Fleece",
+            "Phoenix Fleece Hoodie",
+            "Худи Phoenix Fleece",
+          ],
+          "p.w1.desc": [
+            "Miękka bluza z kapturem.",
+            "Soft hooded sweatshirt.",
+            "Мягкая толстовка с капюшоном.",
+          ],
+          "p.w2.name": ["Jeansy Barrel", "Barrel Jeans", "Джинсы Barrel"],
+          "p.w2.desc": [
+            "Ikoniczne luźne jeansy.",
+            "Iconic loose-fit jeans.",
+            "Культовые свободные джинсы.",
+          ],
+          "p.a1.name": ["Torebka Loulou", "Loulou Bag", "Сумка Loulou"],
+          "p.a1.desc": [
+            "Skórzana torebka.",
+            "Leather handbag.",
+            "Кожаная сумка.",
+          ],
+          "p.a2.name": [
+            "Portfel Saint Sulpice",
+            "Saint Sulpice Wallet",
+            "Кошелёк Saint Sulpice",
+          ],
+          "p.a2.desc": [
+            "Luksusowy portfel na karty.",
+            "Luxury card wallet.",
+            "Роскошный кошелёк для карт.",
+          ],
+        },
+      };
+    </script>
+    <script>
+      "use strict";
+      /* Dane sklepu bez tekstów (teksty są w i18n.js). Cena w PLN jako liczba. */
+      window.UrbanData = {
+        SITE: {
+          owner: "?",
+          email: "urban@gmail.com",
+          phone: "+48 796 895 302",
+          stats: [
+            { value: "5+", key: "about.years" },
+            { value: "500+", key: "about.orders" },
+            { value: "100%", key: "about.original" },
+          ],
+        },
+        CATEGORIES: {
+          men: {
+            image:
+              "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?q=80&w=1200",
+          },
+          women: {
+            image:
+              "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200",
+          },
+          acc: {
+            image:
+              "https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=1200",
+          },
+        },
+        PRODUCTS: [
+          {
+            id: "m1",
+            category: "men",
+            brand: "Stone Island",
+            price: 1250,
+            colors: ["olive", "white", "black"],
+            sizes: ["S", "M", "L", "XL", "XXL"],
+            images: ["stone1.png", "stone2.png", "stone3.png"],
+            variants: {
+              olive: ["stone1.png"],
+              white: ["stone2.png"],
+              black: ["stone3.png"],
+            },
+          },
+          {
+            id: "m2",
+            category: "men",
+            brand: "Nike",
+            price: 549,
+            colors: ["blue", "blackwhite", "black", "yellow"],
+            sizes: ["S", "M", "L", "XL"],
+            images: ["zip1.png", "zip2.png", "zip3.png", "zip4.png"],
+            variants: {
+              blue: ["zip1.png"],
+              blackwhite: ["zip2.png"],
+              black: ["zip3.png"],
+              yellow: ["zip4.png"],
+            },
+          },
+          {
+            id: "m3",
+            category: "men",
+            brand: "Nike",
+            price: 799,
+            colors: ["blueblack", "greyyellow", "black", "white"],
+            sizes: ["40", "41", "42", "42.5", "43", "44", "45"],
+            images: [
+              "airmax1.png",
+              "airmax2.png",
+              "airmax3.png",
+              "airmax4.png",
+            ],
+            variants: {
+              blueblack: ["airmax1.png"],
+              greyyellow: ["airmax2.png"],
+              black: ["airmax3.png"],
+              white: ["airmax4.png"],
+            },
+          },
+          {
+            id: "w1",
+            category: "women",
+            brand: "Nike",
+            price: 450,
+            colors: ["blue", "white"],
+            sizes: ["XS", "S", "M", "L"],
+            images: ["fenix1.png", "fenix2.png"],
+            variants: { blue: ["fenix1.png"], white: ["fenix2.png"] },
+          },
+          {
+            id: "w2",
+            category: "women",
+            brand: "Levi's",
+            price: 499,
+            colors: ["lightblue", "blue"],
+            sizes: ["XS", "S", "M", "L"],
+            images: ["jeans1.png", "jeans2.png"],
+            variants: { lightblue: ["jeans1.png"], blue: ["jeans2.png"] },
+          },
+          {
+            id: "a1",
+            category: "acc",
+            brand: "Saint Laurent",
+            price: 850,
+            colors: ["brown", "cream", "grey", "burgundy", "white"],
+            sizes: ["onesize"],
+            images: [
+              "sanl1.png",
+              "sanl3.png",
+              "sanl4.png",
+              "sanl5.png",
+              "sanl6.png",
+            ],
+            variants: {
+              brown: ["sanl1.png"],
+              cream: ["sanl3.png"],
+              grey: ["sanl4.png"],
+              burgundy: ["sanl5.png"],
+              white: ["sanl6.png"],
+            },
+          },
+          {
+            id: "a2",
+            category: "acc",
+            brand: "Goyard",
+            price: 1800,
+            colors: ["black", "white", "green"],
+            sizes: ["onesize"],
+            images: ["cash1.png", "cash2.png", "cash3.png"],
+            // zdjęcia przypisane do koloru – dopisz kolejne pliki do tablicy, by dodać więcej miniatur
+            variants: {
+              black: ["cash3.png"],
+              white: ["cash1.png"],
+              green: ["cash2.png"],
+            },
+          },
+        ],
+      };
+    </script>
+    <script>
+      "use strict";
+      (() => {
+        const { SITE, CATEGORIES, PRODUCTS } = window.UrbanData;
+        const { LANGS, LOCALES, DICT } = window.I18N;
+
+        /* ---------- Utils ---------- */
+        const $ = (sel, root = document) => root.querySelector(sel);
+        const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+        const esc = (s) =>
+          String(s).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+        const findProduct = (id) => PRODUCTS.find((p) => p.id === id);
+        // zdjęcia dla wybranego koloru (jeśli produkt ma warianty), inaczej wszystkie zdjęcia produktu
+        const imagesFor = (p, color) => p.variants?.[color] ?? p.images;
+
+        /* ---------- i18n ---------- */
+        const LANG_KEY = "urban-drop-lang";
+        const detectLang = () => {
+          try {
+            const saved = localStorage.getItem(LANG_KEY);
+            if (LANGS.includes(saved)) return saved;
+          } catch {
+            /* brak storage */
+          }
+          const nav = (navigator.language || "pl").slice(0, 2);
+          return LANGS.includes(nav) ? nav : "pl";
+        };
+        let lang = detectLang();
+        const t = (key) => DICT[key]?.[LANGS.indexOf(lang)] ?? key;
+        const money = (v) =>
+          new Intl.NumberFormat(LOCALES[lang], {
+            style: "currency",
+            currency: "PLN",
+            maximumFractionDigits: 0,
+          }).format(v);
+        const sizeLabel = (s) => (s === "onesize" ? t("size.one") : s);
+        const fallbackImg = () =>
+          `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><rect width='100%25' height='100%25' fill='%23eee'/><text x='50%25' y='50%25' fill='%23aaa' font-family='sans-serif' text-anchor='middle'>${t("img.missing")}</text></svg>`;
+
+        function applyStatic() {
+          $$("[data-i18n]").forEach(
+            (el) => (el.textContent = t(el.dataset.i18n)),
+          );
+          $$("[data-i18n-aria]").forEach((el) =>
+            el.setAttribute("aria-label", t(el.dataset.i18nAria)),
+          );
+          $$("[data-i18n-ph]").forEach(
+            (el) => (el.placeholder = t(el.dataset.i18nPh)),
+          );
+          $$("[data-lang]").forEach((b) =>
+            b.setAttribute("aria-pressed", String(b.dataset.lang === lang)),
+          );
+          $("meta[name=description]").content = t("meta.desc");
+          document.documentElement.lang = lang;
+        }
+
+        /* ---------- Cart ---------- */
+        const Cart = {
+          KEY: "urban-drop-cart",
+          items: [],
+          load() {
+            try {
+              this.items = JSON.parse(localStorage.getItem(this.KEY)) || [];
+            } catch {
+              this.items = [];
+            }
+            // odrzuć wpisy ze starych wersji lub nieistniejących produktów
+            this.items = this.items.filter((i) => {
+              const p = findProduct(i.id);
+              return (
+                p && p.colors.includes(i.color) && p.sizes.includes(i.size)
+              );
+            });
+          },
+          save() {
+            try {
+              localStorage.setItem(this.KEY, JSON.stringify(this.items));
+            } catch {
+              /* tryb prywatny */
+            }
+          },
+          add(id, color, size) {
+            const key = `${id}|${color}|${size}`;
+            const found = this.items.find((i) => i.key === key);
+            found
+              ? found.qty++
+              : this.items.push({ key, id, color, size, qty: 1 });
+            this.save();
+          },
+          change(key, delta) {
+            const item = this.items.find((i) => i.key === key);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty < 1) this.items = this.items.filter((i) => i !== item);
+            this.save();
+          },
+          clear() {
+            this.items = [];
+            this.save();
+          },
+          get count() {
+            return this.items.reduce((n, i) => n + i.qty, 0);
+          },
+          get total() {
+            return this.items.reduce(
+              (sum, i) => sum + findProduct(i.id).price * i.qty,
+              0,
+            );
+          },
+        };
+
+        /* ---------- Views (dane -> HTML) ---------- */
+        const pName = (p) => t(`p.${p.id}.name`);
+
+        const productCard = (p) => `
+    <a class="card" href="#/product/${esc(p.id)}">
+      <div class="card__img"><img src="${esc(p.images[0])}" alt="${esc(pName(p))}" loading="lazy" /></div>
+      <div class="card__info">
+        <span class="brand">${esc(p.brand)}</span>
+        <h3>${esc(pName(p))}</h3>
+        <strong>${money(p.price)}</strong>
+      </div>
+    </a>`;
+
+        const thumbsHtml = (imgs) =>
+          imgs
+            .map(
+              (src, i) => `
+    <button type="button" class="thumb ${i === 0 ? "is-active" : ""}" data-action="thumb" data-src="${esc(src)}" aria-label="${esc(t("product.photo"))} ${i + 1}">
+      <img src="${esc(src)}" alt="" />
+    </button>`,
+            )
+            .join("");
+
+        const views = {
+          home: () => `
+      <section class="hero">
+        ${Object.entries(CATEGORIES)
+          .map(
+            ([key, c]) => `
+          <a class="hero__panel" href="#/${key}">
+            <img src="${esc(c.image)}" alt="${esc(t(`cat.${key}.hero`))}" />
+            <div class="hero__text">
+              <h1>${esc(t(`cat.${key}.hero`))}</h1>
+              <span class="hero__cta">${esc(t(`cat.${key}.cta`))} <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </a>`,
+          )
+          .join("")}
+      </section>`,
+
+          category: (key) => `
+      <div class="container">
+        <h1 class="section-title">${esc(t(`cat.${key}.title`))}</h1>
+        <div class="grid">${PRODUCTS.filter((p) => p.category === key)
+          .map(productCard)
+          .join("")}</div>
+      </div>`,
+
+          product: (p) => `
+      <div class="container">
+        <a class="back" href="#/${p.category}"><i class="fa-solid fa-arrow-left"></i> ${esc(t("product.back"))}</a>
+        <article class="detail">
+          <div class="detail__gallery">
+            <div class="detail__main"><img id="main-img" src="${esc(imagesFor(p, p.colors[0])[0])}" alt="${esc(pName(p))}" /></div>
+            <div class="thumbs" id="thumbs">${thumbsHtml(imagesFor(p, p.colors[0]))}</div>
+          </div>
+          <form class="detail__info" id="product-form" data-id="${esc(p.id)}">
+            <span class="brand">${esc(p.brand)}</span>
+            <h1>${esc(pName(p))}</h1>
+            <div class="price">${money(p.price)}</div>
+            <p>${esc(t(`p.${p.id}.desc`))}</p>
+            <div class="selectors">
+              <div class="field"><label for="color">${esc(t("product.color"))}</label>
+                <select id="color" name="color">${p.colors.map((c) => `<option value="${esc(c)}">${esc(t(`color.${c}`))}</option>`).join("")}</select></div>
+              <div class="field"><label for="size">${esc(t("product.size"))}</label>
+                <select id="size" name="size">${p.sizes.map((s) => `<option value="${esc(s)}">${esc(sizeLabel(s))}</option>`).join("")}</select></div>
+            </div>
+            <button class="btn btn--dark" type="submit"><i class="fa-solid fa-cart-shopping"></i> ${esc(t("product.add"))}</button>
+          </form>
+        </article>
+      </div>`,
+
+          about: () => `
+      <div class="container"><div class="info-box">
+        <h1 class="section-title">${esc(t("nav.about"))}</h1>
+        <p>${esc(t("about.text"))}</p>
+        <div class="stats">${SITE.stats.map((s) => `<div><h3>${esc(s.value)}</h3><p>${esc(t(s.key))}</p></div>`).join("")}</div>
+      </div></div>`,
+
+          contact: () => `
+      <div class="container"><div class="info-box">
+        <h1 class="section-title">${esc(t("nav.contact"))}</h1>
+        <h2>${esc(t("contact.owner"))}: ${esc(SITE.owner)}</h2>
+        <a class="contact__mail" href="mailto:${esc(SITE.email)}">${esc(SITE.email)}</a>
+        <a class="contact__phone" href="tel:${esc(SITE.phone.replace(/\s/g, ""))}">${esc(SITE.phone)}</a>
+        <p class="note">${esc(t("contact.note"))}</p>
+      </div></div>`,
+
+          notFound: () =>
+            `<div class="container"><div class="info-box"><h1 class="section-title">404</h1><a class="back" href="#/">${esc(t("notfound.back"))}</a></div></div>`,
+        };
+
+        /* ---------- Router (#/men, #/product/m1) ---------- */
+        function resolve(hash) {
+          const [, page = "", id] = hash.split("/");
+          if (page === "")
+            return { name: "home", html: views.home(), title: t("title.home") };
+          if (CATEGORIES[page])
+            return {
+              name: page,
+              html: views.category(page),
+              title: t(`cat.${page}.title`),
+            };
+          if (page === "product") {
+            const p = findProduct(id);
+            if (p)
+              return {
+                name: p.category,
+                html: views.product(p),
+                title: `${p.brand} ${pName(p)}`,
+              };
+          }
+          if (page === "about")
+            return {
+              name: "about",
+              html: views.about(),
+              title: t("nav.about"),
+            };
+          if (page === "contact")
+            return {
+              name: "contact",
+              html: views.contact(),
+              title: t("nav.contact"),
+            };
+          return {
+            name: "",
+            html: views.notFound(),
+            title: t("title.notfound"),
+          };
+        }
+
+        function render({ keepScroll = false } = {}) {
+          const route = resolve(location.hash);
+          const app = $("#app");
+          app.innerHTML = route.html;
+          document.title = `${route.title} | URBAN DROP`;
+          $$("[data-route]").forEach((a) =>
+            a.dataset.route === route.name
+              ? a.setAttribute("aria-current", "page")
+              : a.removeAttribute("aria-current"),
+          );
+          toggleMenu(false);
+          if (!keepScroll) {
+            window.scrollTo(0, 0);
+            app.focus({ preventScroll: true });
+          }
+        }
+
+        function setLang(next) {
+          if (!LANGS.includes(next) || next === lang) return;
+          const form = $("#product-form"); // zachowaj wybór koloru/rozmiaru
+          const choice = form && {
+            color: form.color.value,
+            size: form.size.value,
+          };
+          lang = next;
+          try {
+            localStorage.setItem(LANG_KEY, lang);
+          } catch {
+            /* brak storage */
+          }
+          applyStatic();
+          render({ keepScroll: true });
+          renderCart();
+          const f = $("#product-form");
+          if (choice && f) {
+            f.color.value = choice.color;
+            f.size.value = choice.size;
+            updateGallery(choice.color);
+          }
+          if ($("#auth-error").textContent) $("#auth-error").textContent = "";
+        }
+
+        /* ---------- UI helpers ---------- */
+        let toastTimer;
+        function toast(msg) {
+          const el = $("#toast");
+          el.textContent = msg;
+          el.classList.add("is-visible");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(
+            () => el.classList.remove("is-visible"),
+            2200,
+          );
+        }
+
+        function toggleMenu(force) {
+          const menu = $("#menu");
+          const open = force ?? !menu.classList.contains("is-open");
+          menu.classList.toggle("is-open", open);
+          $('[data-action="menu"]').setAttribute("aria-expanded", String(open));
+        }
+
+        function setCartOpen(open) {
+          $("#cart").classList.toggle("is-open", open);
+          $("#cart").setAttribute("aria-hidden", String(!open));
+          $("#overlay").hidden = !open;
+          document.body.style.overflow = open ? "hidden" : "";
+        }
+
+        function renderCart() {
+          $("#cart-body").innerHTML = Cart.items.length
+            ? Cart.items
+                .map((i) => {
+                  const p = findProduct(i.id);
+                  return `
+          <div class="line">
+            <img src="${esc(imagesFor(p, i.color)[0])}" alt="${esc(pName(p))}" />
+            <div>
+              <strong>${esc(pName(p))}</strong>
+              <small>${esc(t(`color.${i.color}`))} · ${esc(sizeLabel(i.size))}</small>
+              <div class="qty">
+                <button data-action="qty" data-key="${esc(i.key)}" data-d="-1" aria-label="${esc(t("cart.less"))}">−</button>
+                <span>${i.qty}</span>
+                <button data-action="qty" data-key="${esc(i.key)}" data-d="1" aria-label="${esc(t("cart.more"))}">+</button>
+              </div>
+            </div>
+            <strong>${money(p.price * i.qty)}</strong>
+          </div>`;
+                })
+                .join("")
+            : `<p class="empty">${esc(t("cart.empty"))}</p>`;
+          $("#cart-total").textContent = money(Cart.total);
+          const badge = $("#cart-badge");
+          badge.textContent = Cart.count;
+          badge.hidden = Cart.count === 0;
+        }
+
+        /* ---------- Gallery: zmiana koloru -> zdjęcia tego koloru ---------- */
+        function updateGallery(color) {
+          const form = $("#product-form");
+          if (!form) return;
+          const imgs = imagesFor(findProduct(form.dataset.id), color);
+          $("#main-img").src = imgs[0];
+          $("#thumbs").innerHTML = thumbsHtml(imgs);
+        }
+
+        /* ---------- Events (delegacja) ---------- */
+        const actions = {
+          menu: () => toggleMenu(),
+          lang: (el) => setLang(el.dataset.lang),
+          "cart-open": () => setCartOpen(true),
+          "cart-close": () => setCartOpen(false),
+          "auth-open": () => $("#auth").showModal(),
+          "auth-close": () => $("#auth").close(),
+          thumb: (el) => {
+            $("#main-img").src = el.dataset.src;
+            $$(".thumb").forEach((x) =>
+              x.classList.toggle("is-active", x === el),
+            );
+          },
+          qty: (el) => {
+            Cart.change(el.dataset.key, Number(el.dataset.d));
+            renderCart();
+          },
+          checkout: () => {
+            if (!Cart.items.length) return toast(t("toast.empty"));
+            Cart.clear();
+            renderCart();
+            setCartOpen(false);
+            toast(t("toast.thanks"));
+          },
+        };
+
+        document.addEventListener("click", (e) => {
+          const el = e.target.closest("[data-action]");
+          if (el) actions[el.dataset.action]?.(el);
+        });
+
+        document.addEventListener("submit", (e) => {
+          const f = e.target;
+          if (f.id === "product-form") {
+            e.preventDefault();
+            Cart.add(f.dataset.id, f.color.value, f.size.value);
+            renderCart();
+            toast(t("toast.added"));
+          }
+          if (f.id === "auth-form") {
+            e.preventDefault();
+            const error = !f.name.value.trim()
+              ? "err.name"
+              : !f.email.value || !f.email.validity.valid
+                ? "err.email"
+                : f.password.value.length < 8
+                  ? "err.pass"
+                  : "";
+            $("#auth-error").textContent = error && t(error);
+            if (error) return;
+            f.reset();
+            $("#auth").close();
+            toast(t("toast.registered"));
+          }
+        });
+
+        // Zepsute obrazki -> placeholder (event "error" nie bąbelkuje, więc capture)
+        document.addEventListener(
+          "error",
+          (e) => {
+            if (e.target.tagName === "IMG" && !e.target.src.startsWith("data:"))
+              e.target.src = fallbackImg();
+          },
+          true,
+        );
+
+        document.addEventListener("change", (e) => {
+          if (e.target.id === "color") updateGallery(e.target.value);
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") setCartOpen(false);
+        });
+        window.addEventListener("hashchange", () => render());
+
+        /* ---------- Init ---------- */
+        Cart.load();
+        applyStatic();
+        renderCart();
+        render();
+        $("#year").textContent = new Date().getFullYear();
+      })();
+    </script>
+  </body>
+</html>
